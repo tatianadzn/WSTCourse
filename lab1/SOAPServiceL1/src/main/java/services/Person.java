@@ -33,7 +33,7 @@ public class Person {
     public boolean getIsRecommended() { return isRecommended; }
     public void setId(int id) { this.id = id; }
     public void setStateId(int stateId) { this.stateId = stateId; }
-    public void setRecommended(boolean recommended) { isRecommended = recommended; }
+    public void setIsRecommended(boolean recommended) { isRecommended = recommended; }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
