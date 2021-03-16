@@ -37,15 +37,17 @@ public class PostgreSQLDAO {
                 query.append(queryArgs.get(i));
             }
 
-            System.out.println(query.toString());
             ResultSet rs = stmt.executeQuery(query.toString());
 
             while (rs.next()) {
-                String name = rs.getString("first_name");
-                String surname = rs.getString("last_name");
-                int agee = rs.getInt("age");
+                int personId = rs.getInt("id");
+                String personFirstName = rs.getString("first_name");
+                String personLastName = rs.getString("last_name");
+                int personAge = rs.getInt("age");
+                int personStateId = rs.getInt("state_id");
+                boolean personIsRecommended = rs.getBoolean("is_recommended");
 
-                Person person = new Person(name, surname, agee);
+                Person person = new Person(personId, personFirstName, personLastName, personAge, personStateId, personIsRecommended);
                 persons.add(person);
             }
         } catch (SQLException ex) {

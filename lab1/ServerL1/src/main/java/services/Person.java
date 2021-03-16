@@ -1,30 +1,44 @@
 package services;
 
 public class Person {
-    private String name;
-    private String surname;
+    private int id;
+    private String firstName;
+    private String lastName;
     private int age;
+    private int stateId;
+    private boolean isRecommended;
+
     public Person() {
     }
-    public Person(String name, String surname, int age) {
-        this.name = name;
-        this.surname = surname;
+
+    public Person(int id, String firstName, String lastName, int age, int stateId, boolean isRecommended) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.age = age;
+        this.stateId = stateId;
+        this.isRecommended = isRecommended;
     }
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
     public int getAge() {
         return age;
     }
-    public void setName(String name) {
-        this.name = name;
+    public int getId() { return id; }
+    public int getStateId() { return stateId; }
+    public boolean getIsRecommended() { return isRecommended; }
+    public void setId(int id) { this.id = id; }
+    public void setStateId(int stateId) { this.stateId = stateId; }
+    public void setRecommended(boolean recommended) { isRecommended = recommended; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
     public void setAge(int age) {
         this.age = age;
@@ -32,6 +46,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return "services.Person{" + "name=" + name + ", surname=" + surname + ", age=" + age + '}';
+        return "services.Person{" + "id =" + id + ", first name=" + firstName + ", last name=" + lastName + ", age=" + age + ", state id=" + stateId + ", is recommended=" + isRecommended + '}';
     }
 }
