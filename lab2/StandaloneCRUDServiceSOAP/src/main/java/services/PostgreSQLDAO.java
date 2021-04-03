@@ -49,7 +49,6 @@ public class PostgreSQLDAO {
             String query = "INSERT INTO persons(first_name, last_name, age, is_recommended, state_id) " +
                     "values (\'" + first_name + "\', \'" + last_name + "\', " +
                                   age + ", " + state_id + ", " + is_recommended + ") returning id;";
-            System.out.println(query);
 
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
@@ -59,6 +58,28 @@ public class PostgreSQLDAO {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id_res;
+    }
+
+    public int updatePerson(int id, String first_name, String last_name,
+                             String age, String state_id, String is_recommended){
+        int rs = 0;
+        try (Connection connection = ConnectionUtil.getConnection()){
+            Statement stmt = connection.createStatement();
+
+            String query = "update persons set " +
+                    "first_name=\'" + first_name +
+                    "\', last_name=\'" + last_name +
+                    "\', age=" + age +
+                    ", state_id=" + state_id +
+                    ", is_recommended=" + is_recommended +
+                    " where id=" + id;
+
+            rs = stmt.executeUpdate(query);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
     }
 
     private String buildQuery (String id, String first_name, String last_name,

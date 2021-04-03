@@ -18,5 +18,9 @@ public class PersonWebService {
         return (new PostgreSQLDAO()).createPerson(first_name, last_name, age, state_id, is_recommended);
     }
 
+    @WebMethod(operationName = "updatePerson")
+    public int updatePerson(int id, String first_name, String last_name, String age, String state_id, String is_recommended){
+        return (new PostgreSQLDAO().updatePerson(id, first_name, last_name, age, state_id, is_recommended));
+    }
 
 }
