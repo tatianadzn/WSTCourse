@@ -78,7 +78,7 @@ public class WebServiceClient {
     private static void doUpdateRequest(){
         Vector<String> arg = parseNRequestArgs();
         try {
-            if (arg.size() != NUM_OF_ARGS + 1) throw new IOException("Expected " + (NUM_OF_ARGS + 1) + " arguments, got " + arg.size());
+            if (arg.size() != NUM_OF_ARGS) throw new IOException("Expected " + (NUM_OF_ARGS) + " arguments, got " + arg.size());
             int arg0 = Integer.parseInt(arg.firstElement().trim());
             int result_status = personService.getPersonWebServicePort().updatePerson(arg0, arg.get(1), arg.get(2), arg.get(3), arg.get(4), arg.get(5));
             if (result_status == 1){

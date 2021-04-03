@@ -18,7 +18,7 @@ public class PostgreSQLDAO {
             Statement stmt = connection.createStatement();
 
 
-            ResultSet rs = stmt.executeQuery(buildQuery(id, first_name, last_name,
+            ResultSet rs = stmt.executeQuery(buildSelectQuery(id, first_name, last_name,
                                                         age, state_id, is_recommended));
 
             while (rs.next()) {
@@ -66,15 +66,8 @@ public class PostgreSQLDAO {
         try (Connection connection = ConnectionUtil.getConnection()){
             Statement stmt = connection.createStatement();
 
-            String query = "update persons set " +
-                    "first_name=\'" + first_name +
-                    "\', last_name=\'" + last_name +
-                    "\', age=" + age +
-                    ", state_id=" + state_id +
-                    ", is_recommended=" + is_recommended +
-                    " where id=" + id;
-
-            rs = stmt.executeUpdate(query);
+            rs = stmt.executeUpdate(buildUpdateQuery(id, first_name, last_name,
+                    age, state_id, is_recommended));
 
         } catch (SQLException ex) {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,8 +90,8 @@ public class PostgreSQLDAO {
         return rs;
     }
 
-    private String buildQuery (String id, String first_name, String last_name,
-                               String age, String state_id, String is_recommended){
+    private String buildSelectQuery(String id, String first_name, String last_name,
+                                    String age, String state_id, String is_recommended){
         StringBuilder query = new StringBuilder("select * from persons");
         List<String> queryArgs = new ArrayList<>();
         if (id != null)
@@ -120,6 +113,36 @@ public class PostgreSQLDAO {
             else query.append(" and ");
             query.append(queryArgs.get(i));
         }
+        query.append(" order by id");
+        return query.toString();
+    }
+
+    private String buildUpdateQuery(int id, String first_name, String last_name,
+                                    String age, String state_id, String is_recommended){
+        StringBuilder query = new StringBuilder("update persons set ");
+        List<String> queryArgs = new ArrayList<>();
+        if (first_name != null)
+            queryArgs.add("first_name = '" + first_name + "'");
+        if (last_name != null)
+            queryArgs.add("last_name = '" + last_name + "'");
+        if (age != null)
+            queryArgs.add("age = " + age);
+        if (state_id != null)
+            queryArgs.add("state_id = " + state_id);
+        if (is_recommended != null)
+            queryArgs.add("is_recommended = " + is_recommended);
+
+        if (queryArgs.size() == 0) {
+            //throw error
+        }
+
+        for (int i = 0; i < queryArgs.size() - 1; i++) {
+            query.append(queryArgs.get(i));
+            query.append(", ");
+        }
+        query.append(queryArgs.get(queryArgs.size() - 1));
+        query.append(" where id=").append(id);
+        System.out.println(query.toString());
         return query.toString();
     }
 }
