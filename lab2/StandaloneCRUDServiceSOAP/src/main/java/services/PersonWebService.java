@@ -23,4 +23,8 @@ public class PersonWebService {
         return (new PostgreSQLDAO().updatePerson(id, first_name, last_name, age, state_id, is_recommended));
     }
 
+    @WebMethod(operationName = "deletePerson")
+    public int deletePerson(int id){
+        return (new PostgreSQLDAO().deletePerson(id));
+    }
 }

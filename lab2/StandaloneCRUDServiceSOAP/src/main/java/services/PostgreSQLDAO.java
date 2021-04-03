@@ -82,6 +82,21 @@ public class PostgreSQLDAO {
         return rs;
     }
 
+    public int deletePerson (int id){
+        int rs = 0;
+        try (Connection connection = ConnectionUtil.getConnection()){
+            Statement stmt = connection.createStatement();
+
+            String query = "delete from persons where id=" + id;
+
+            rs = stmt.executeUpdate(query);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+
     private String buildQuery (String id, String first_name, String last_name,
                                String age, String state_id, String is_recommended){
         StringBuilder query = new StringBuilder("select * from persons");
