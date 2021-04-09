@@ -27,90 +27,48 @@ public interface PersonWebService {
 
     /**
      * 
-     * @param arg3
-     * @param arg2
-     * @param arg5
-     * @param arg4
-     * @param arg1
      * @param arg0
      * @return
-     *     returns java.util.List<services.Person>
+     *     returns java.util.List<services.PersonWithID>
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
+    @WebResult(name = "person", targetNamespace = "")
     @RequestWrapper(localName = "getPersons", targetNamespace = "http://services/", className = "services.GetPersons")
     @ResponseWrapper(localName = "getPersonsResponse", targetNamespace = "http://services/", className = "services.GetPersonsResponse")
     @Action(input = "http://services/PersonWebService/getPersonsRequest", output = "http://services/PersonWebService/getPersonsResponse")
-    public List<Person> getPersons(
+    public List<PersonWithID> getPersons(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4,
-        @WebParam(name = "arg5", targetNamespace = "")
-        String arg5);
+        PersonWithID arg0);
 
     /**
      * 
-     * @param arg3
-     * @param arg2
-     * @param arg4
-     * @param arg1
      * @param arg0
      * @return
      *     returns int
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
+    @WebResult(name = "resultCode", targetNamespace = "")
     @RequestWrapper(localName = "createPerson", targetNamespace = "http://services/", className = "services.CreatePerson")
     @ResponseWrapper(localName = "createPersonResponse", targetNamespace = "http://services/", className = "services.CreatePersonResponse")
     @Action(input = "http://services/PersonWebService/createPersonRequest", output = "http://services/PersonWebService/createPersonResponse")
     public int createPerson(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4);
+        Person arg0);
 
     /**
      * 
-     * @param arg3
-     * @param arg2
-     * @param arg5
-     * @param arg4
-     * @param arg1
      * @param arg0
      * @return
      *     returns int
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
+    @WebResult(name = "resultCode", targetNamespace = "")
     @RequestWrapper(localName = "updatePerson", targetNamespace = "http://services/", className = "services.UpdatePerson")
     @ResponseWrapper(localName = "updatePersonResponse", targetNamespace = "http://services/", className = "services.UpdatePersonResponse")
     @Action(input = "http://services/PersonWebService/updatePersonRequest", output = "http://services/PersonWebService/updatePersonResponse")
     public int updatePerson(
         @WebParam(name = "arg0", targetNamespace = "")
-        int arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4,
-        @WebParam(name = "arg5", targetNamespace = "")
-        String arg5);
+        PersonWithID arg0);
 
     /**
      * 
@@ -119,7 +77,7 @@ public interface PersonWebService {
      *     returns int
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
+    @WebResult(name = "resultCode", targetNamespace = "")
     @RequestWrapper(localName = "deletePerson", targetNamespace = "http://services/", className = "services.DeletePerson")
     @ResponseWrapper(localName = "deletePersonResponse", targetNamespace = "http://services/", className = "services.DeletePersonResponse")
     @Action(input = "http://services/PersonWebService/deletePersonRequest", output = "http://services/PersonWebService/deletePersonResponse")

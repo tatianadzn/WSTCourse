@@ -3,6 +3,7 @@ package services;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -16,12 +17,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="age" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="firstName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="isRecommended" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="lastName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="stateId" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="age" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="stateId" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="isRecommended" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,37 +32,22 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "person", propOrder = {
-    "age",
     "firstName",
-    "id",
-    "isRecommended",
     "lastName",
-    "stateId"
+    "age",
+    "stateId",
+    "isRecommended"
+})
+@XmlSeeAlso({
+    PersonWithID.class
 })
 public class Person {
 
-    protected int age;
     protected String firstName;
-    protected int id;
-    protected boolean isRecommended;
     protected String lastName;
-    protected int stateId;
-
-    /**
-     * Gets the value of the age property.
-     * 
-     */
-    public int getAge() {
-        return age;
-    }
-
-    /**
-     * Sets the value of the age property.
-     * 
-     */
-    public void setAge(int value) {
-        this.age = value;
-    }
+    protected Integer age;
+    protected Integer stateId;
+    protected Boolean isRecommended;
 
     /**
      * Gets the value of the firstName property.
@@ -86,38 +71,6 @@ public class Person {
      */
     public void setFirstName(String value) {
         this.firstName = value;
-    }
-
-    /**
-     * Gets the value of the id property.
-     * 
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     */
-    public void setId(int value) {
-        this.id = value;
-    }
-
-    /**
-     * Gets the value of the isRecommended property.
-     * 
-     */
-    public boolean isIsRecommended() {
-        return isRecommended;
-    }
-
-    /**
-     * Sets the value of the isRecommended property.
-     * 
-     */
-    public void setIsRecommended(boolean value) {
-        this.isRecommended = value;
     }
 
     /**
@@ -145,19 +98,75 @@ public class Person {
     }
 
     /**
+     * Gets the value of the age property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *     
+     */
+    public Integer getAge() {
+        return age;
+    }
+
+    /**
+     * Sets the value of the age property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *     
+     */
+    public void setAge(Integer value) {
+        this.age = value;
+    }
+
+    /**
      * Gets the value of the stateId property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *     
      */
-    public int getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
     /**
      * Sets the value of the stateId property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *     
      */
-    public void setStateId(int value) {
+    public void setStateId(Integer value) {
         this.stateId = value;
+    }
+
+    /**
+     * Gets the value of the isRecommended property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsRecommended() {
+        return isRecommended;
+    }
+
+    /**
+     * Sets the value of the isRecommended property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsRecommended(Boolean value) {
+        this.isRecommended = value;
     }
 
 }

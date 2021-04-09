@@ -30,6 +30,7 @@ public class ObjectFactory {
     private final static QName _DeletePerson_QNAME = new QName("http://services/", "deletePerson");
     private final static QName _CreatePersonResponse_QNAME = new QName("http://services/", "createPersonResponse");
     private final static QName _UpdatePersonResponse_QNAME = new QName("http://services/", "updatePersonResponse");
+    private final static QName _Person_QNAME = new QName("http://services/", "person");
     private final static QName _GetPersonsResponse_QNAME = new QName("http://services/", "getPersonsResponse");
     private final static QName _GetPersons_QNAME = new QName("http://services/", "getPersons");
 
@@ -113,6 +114,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PersonWithID }
+     * 
+     */
+    public PersonWithID createPersonWithID() {
+        return new PersonWithID();
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CreatePerson }{@code >}}
      * 
      */
@@ -164,6 +173,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://services/", name = "updatePersonResponse")
     public JAXBElement<UpdatePersonResponse> createUpdatePersonResponse(UpdatePersonResponse value) {
         return new JAXBElement<UpdatePersonResponse>(_UpdatePersonResponse_QNAME, UpdatePersonResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Object }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services/", name = "person")
+    public JAXBElement<Object> createPerson(Object value) {
+        return new JAXBElement<Object>(_Person_QNAME, Object.class, null, value);
     }
 
     /**

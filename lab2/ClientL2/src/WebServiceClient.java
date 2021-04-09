@@ -8,32 +8,34 @@ import java.util.Vector;
 
 import services.Person;
 import services.PersonService;
+import services.PersonWithID;
+import utils.Parsers;
 
 public class WebServiceClient {
-    private static Scanner scanner;
     private static PersonService personService;
-    private static final int NUM_OF_ARGS = 6;
+    private static final int NUM_OF_PERSON_WITH_ID_FIELD = 6;
 
     public static void main(String[] args) throws MalformedURLException {
         printWelcomeMsg();
         URL url = new URL("http://localhost:8080/PersonService?wsdl");
         personService = new PersonService(url);
 
-        scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         if (scanner.hasNext()) {
             String operation = scanner.next();
+            Vector<String> requestArgs = Parsers.parseNRequestArgs(scanner);
             switch (operation) {
                 case "show":
-                    doShowRequest();
+                    doShowRequest(requestArgs);
                     break;
                 case "create":
-                    doCreateRequest();
+                    doCreateRequest(requestArgs);
                     break;
                 case "update":
-                    doUpdateRequest();
+                    doUpdateRequest(requestArgs);
                     break;
                 case "delete":
-                    doDeleteRequest();
+                    doDeleteRequest(requestArgs);
                     break;
                 default:
                     System.out.println("Error: operation '" + operation + "' is not supported");
@@ -42,13 +44,11 @@ public class WebServiceClient {
     }
 
 
-    private static void doShowRequest(){
+    private static void doShowRequest(Vector<String> arg){
         try{
-            Vector<String> arg = parseNRequestArgs();
-            if (arg.size() != NUM_OF_ARGS) throw new IOException("Expected " + NUM_OF_ARGS + " arguments, got " + arg.size());
-
-            List<Person> persons = personService.getPersonWebServicePort().getPersons(arg.get(0), arg.get(1), arg.get(2), arg.get(3), arg.get(4), arg.get(5));
-            for (Person person : persons) {
+            PersonWithID personWithID = Parsers.parsePersonWithID(arg, NUM_OF_PERSON_WITH_ID_FIELD);
+            List<PersonWithID> persons = personService.getPersonWebServicePort().getPersons(personWithID);
+            for (PersonWithID person : persons) {
                 printPerson(person);
             }
             System.out.println("Total persons: " + persons.size());
@@ -58,12 +58,10 @@ public class WebServiceClient {
 
     }
 
-    private static void doCreateRequest(){
+    private static void doCreateRequest(Vector<String> arg){
         try{
-            Vector<String> arg = parseNRequestArgs();
-            if (arg.size() != NUM_OF_ARGS) throw new IOException("Expected " + NUM_OF_ARGS + " arguments, got " + arg.size());
-
-            int id_res = personService.getPersonWebServicePort().createPerson(arg.get(0), arg.get(1), arg.get(2), arg.get(3), arg.get(4));
+            Person person = Parsers.parsePerson(arg, NUM_OF_PERSON_WITH_ID_FIELD - 1);
+            int id_res = personService.getPersonWebServicePort().createPerson(person);
             if (id_res != -1){
                 System.out.println("Person successfully created; id = " + id_res);
             } else {
@@ -75,12 +73,10 @@ public class WebServiceClient {
         }
     }
 
-    private static void doUpdateRequest(){
-        Vector<String> arg = parseNRequestArgs();
+    private static void doUpdateRequest(Vector<String> arg){
         try {
-            if (arg.size() != NUM_OF_ARGS) throw new IOException("Expected " + (NUM_OF_ARGS) + " arguments, got " + arg.size());
-            int arg0 = Integer.parseInt(arg.firstElement().trim());
-            int result_status = personService.getPersonWebServicePort().updatePerson(arg0, arg.get(1), arg.get(2), arg.get(3), arg.get(4), arg.get(5));
+            PersonWithID personWithID = Parsers.parsePersonWithID(arg, NUM_OF_PERSON_WITH_ID_FIELD);
+            int result_status = personService.getPersonWebServicePort().updatePerson(personWithID);
             if (result_status == 1){
                 System.out.println("Person successfully updated");
             } else {
@@ -94,8 +90,7 @@ public class WebServiceClient {
         }
     }
 
-    private static void doDeleteRequest(){
-        Vector<String> arg = parseNRequestArgs();
+    private static void doDeleteRequest(Vector<String> arg){
         try {
             if (arg.size() != 1) throw new IOException("Expected 1 argument, got " + arg.size());
             int arg0 = Integer.parseInt(arg.firstElement().trim());
@@ -113,20 +108,9 @@ public class WebServiceClient {
         }
     }
 
-    private static Vector<String> parseNRequestArgs(){
-        Vector<String> arg = new Vector<>();
-        while (scanner.hasNext()){
-            String temp = scanner.next();
-            if (temp.equals("null")) {
-                arg.add(null);
-            } else {
-                arg.add(temp);
-            }
-        }
-        return arg;
-    }
 
-    private static void printPerson(Person person){
+
+    private static void printPerson(PersonWithID person){
         System.out.println("ID: " + person.getId() + ", name: " + person.getFirstName() +
                     ", surname: " + person.getLastName() + ", age: " + person.getAge() +
                     ", state ID: " + person.getStateId() + ", is recommended: " + person.isIsRecommended());
