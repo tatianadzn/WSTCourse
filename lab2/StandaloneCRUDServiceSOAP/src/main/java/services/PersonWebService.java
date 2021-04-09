@@ -1,29 +1,37 @@
 package services;
 
+import models.Person;
+import models.PersonWithID;
+
 import java.util.List;
 import javax.jws.WebMethod;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 
 @WebService(serviceName = "PersonService")
 public class PersonWebService {
+
     @WebMethod(operationName = "getPersons")
-    public List<Person> getPersons(String id, String first_name, String last_name, String age, String state_id, String is_recommended) {
+    @WebResult(name = "person")
+    public List<PersonWithID> getPersons(PersonWithID person) {
         PostgreSQLDAO dao = new PostgreSQLDAO();
-        List<Person> persons = dao.getPersons(id, first_name, last_name, age, state_id, is_recommended);
-        return persons;
+        return dao.getPersons(person);
     }
 
     @WebMethod(operationName = "createPerson")
-    public int createPerson(String first_name, String last_name, String age, String state_id, String is_recommended){
-        return (new PostgreSQLDAO()).createPerson(first_name, last_name, age, state_id, is_recommended);
+    @WebResult(name = "resultCode")
+    public int createPerson(Person person){
+        return (new PostgreSQLDAO()).createPerson(person);
     }
 
     @WebMethod(operationName = "updatePerson")
-    public int updatePerson(int id, String first_name, String last_name, String age, String state_id, String is_recommended){
-        return (new PostgreSQLDAO().updatePerson(id, first_name, last_name, age, state_id, is_recommended));
+    @WebResult(name = "resultCode")
+    public int updatePerson(PersonWithID person){
+        return (new PostgreSQLDAO().updatePerson(person));
     }
 
     @WebMethod(operationName = "deletePerson")
+    @WebResult(name = "resultCode")
     public int deletePerson(int id){
         return (new PostgreSQLDAO().deletePerson(id));
     }

@@ -1,5 +1,8 @@
 package services;
 
+import models.Person;
+import models.PersonWithID;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,46 +14,36 @@ import java.util.logging.Logger;
 
 public class PostgreSQLDAO {
 
-    public List<Person> getPersons(String id, String first_name, String last_name,
-                                   String age, String state_id, String is_recommended) {
-        List<Person> persons = new ArrayList<>();
+    public List<PersonWithID> getPersons(PersonWithID person){
+        List<PersonWithID> personSelections = new ArrayList<>();
+
         try (Connection connection = ConnectionUtil.getConnection()){
             Statement stmt = connection.createStatement();
 
-
-            ResultSet rs = stmt.executeQuery(buildSelectQuery(id, first_name, last_name,
-                                                        age, state_id, is_recommended));
-
-            while (rs.next()) {
-                int personId = rs.getInt("id");
-                String personFirstName = rs.getString("first_name");
-                String personLastName = rs.getString("last_name");
-                int personAge = rs.getInt("age");
-                int personStateId = rs.getInt("state_id");
-                boolean personIsRecommended = rs.getBoolean("is_recommended");
-
-                Person person = new Person(personId, personFirstName, personLastName, personAge,
-                                            personStateId, personIsRecommended);
-                persons.add(person);
+            ResultSet rs = stmt.executeQuery(buildSelectQuery(person));
+            while(rs.next()){
+                personSelections.add(new PersonWithID(
+                        rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getInt("age"),
+                        rs.getInt("state_id"),
+                        rs.getBoolean("is_recommended")));
             }
-        } catch (SQLException ex) {
+        } catch (SQLException ex){
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return persons;
+        return personSelections;
     }
 
-    public int createPerson(String first_name, String last_name,
-                                   String age, String state_id, String is_recommended){
+
+    public int createPerson(Person person){
         int id_res = -1;
         try (Connection connection = ConnectionUtil.getConnection()){
             Statement stmt = connection.createStatement();
 
-            String query = "INSERT INTO persons(first_name, last_name, age, is_recommended, state_id) " +
-                    "values (\'" + first_name + "\', \'" + last_name + "\', " +
-                                  age + ", " + state_id + ", " + is_recommended + ") returning id;";
+            ResultSet rs = stmt.executeQuery(buildCreateQuery(person));
 
-            ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
                 id_res = rs.getInt("id");
             }
@@ -60,14 +53,12 @@ public class PostgreSQLDAO {
         return id_res;
     }
 
-    public int updatePerson(int id, String first_name, String last_name,
-                             String age, String state_id, String is_recommended){
+    public int updatePerson(PersonWithID person){
         int rs = 0;
         try (Connection connection = ConnectionUtil.getConnection()){
             Statement stmt = connection.createStatement();
 
-            rs = stmt.executeUpdate(buildUpdateQuery(id, first_name, last_name,
-                    age, state_id, is_recommended));
+            rs = stmt.executeUpdate(buildUpdateQuery(person));
 
         } catch (SQLException ex) {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,22 +81,21 @@ public class PostgreSQLDAO {
         return rs;
     }
 
-    private String buildSelectQuery(String id, String first_name, String last_name,
-                                    String age, String state_id, String is_recommended){
+    private String buildSelectQuery(PersonWithID person){
         StringBuilder query = new StringBuilder("select * from persons");
         List<String> queryArgs = new ArrayList<>();
-        if (id != null)
-            queryArgs.add("id = " + id + " ");
-        if (first_name != null)
-            queryArgs.add("first_name = '" + first_name + "' ");
-        if (last_name != null)
-            queryArgs.add("last_name = '" + last_name + "' ");
-        if (age != null)
-            queryArgs.add("age = " + age + " ");
-        if (state_id != null)
-            queryArgs.add("state_id = " + state_id + " ");
-        if (is_recommended != null)
-            queryArgs.add("is_recommended = " + is_recommended + " ");
+        if (person.getId() != null)
+            queryArgs.add("id = " + person.getId() + " ");
+        if (person.getFirstName() != null)
+            queryArgs.add("first_name = '" + person.getFirstName() + "' ");
+        if (person.getLastName() != null)
+            queryArgs.add("last_name = '" + person.getLastName() + "' ");
+        if (person.getAge() != null)
+            queryArgs.add("age = " + person.getAge() + " ");
+        if (person.getStateId() != null)
+            queryArgs.add("state_id = " + person.getStateId() + " ");
+        if (person.getIsRecommended() != null)
+            queryArgs.add("is_recommended = " + person.getIsRecommended() + " ");
 
         for (int i = 0; i < queryArgs.size(); i++) {
             if (i == 0)
@@ -117,20 +107,19 @@ public class PostgreSQLDAO {
         return query.toString();
     }
 
-    private String buildUpdateQuery(int id, String first_name, String last_name,
-                                    String age, String state_id, String is_recommended){
+    private String buildUpdateQuery(PersonWithID person){
         StringBuilder query = new StringBuilder("update persons set ");
         List<String> queryArgs = new ArrayList<>();
-        if (first_name != null)
-            queryArgs.add("first_name = '" + first_name + "'");
-        if (last_name != null)
-            queryArgs.add("last_name = '" + last_name + "'");
-        if (age != null)
-            queryArgs.add("age = " + age);
-        if (state_id != null)
-            queryArgs.add("state_id = " + state_id);
-        if (is_recommended != null)
-            queryArgs.add("is_recommended = " + is_recommended);
+        if (person.getFirstName() != null)
+            queryArgs.add("first_name = '" + person.getFirstName() + "'");
+        if (person.getLastName() != null)
+            queryArgs.add("last_name = '" + person.getLastName() + "'");
+        if (person.getAge() != null)
+            queryArgs.add("age = " + person.getAge());
+        if (person.getStateId() != null)
+            queryArgs.add("state_id = " + person.getStateId());
+        if (person.getIsRecommended() != null)
+            queryArgs.add("is_recommended = " + person.getIsRecommended());
 
         if (queryArgs.size() == 0) {
             //throw error
@@ -141,8 +130,13 @@ public class PostgreSQLDAO {
             query.append(", ");
         }
         query.append(queryArgs.get(queryArgs.size() - 1));
-        query.append(" where id=").append(id);
-        System.out.println(query.toString());
+        query.append(" where id=").append(person.getId());
         return query.toString();
+    }
+
+    private String buildCreateQuery(Person person){
+        return "INSERT INTO persons(first_name, last_name, age, is_recommended, state_id) " +
+                "values (\'" + person.getFirstName() + "\', \'" + person.getLastName() + "\', " +
+                person.getAge() + ", " + person.getStateId() + ", " + person.getIsRecommended() + ") returning id;";
     }
 }
