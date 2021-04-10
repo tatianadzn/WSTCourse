@@ -4,21 +4,13 @@ import services.Person;
 import services.PersonWithID;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Parsers {
-    public static Vector<String> parseNRequestArgs(Scanner scanner){
-        Vector<String> arg = new Vector<>();
-        while (scanner.hasNext()){
-            String temp = scanner.next();
-            if (temp.equals("null")) {
-                arg.add(null);
-            } else {
-                arg.add(temp);
-            }
+    public static void parseVector(Vector<String> vec){
+        for (int i = 0; i < vec.size(); i++){
+            if (vec.get(i).equals("null")) vec.set(i, null);
         }
-        return arg;
     }
 
     public static Person parsePerson(Vector<String> arg, int size) throws IOException {
@@ -32,7 +24,6 @@ public class Parsers {
         if (arg.get(3) != null) { person.setStateId(Integer.parseInt(arg.get(3))); }            else { person.setStateId(null); }
         if (arg.get(4) != null) { person.setIsRecommended(Boolean.parseBoolean(arg.get(4))); }  else { person.setIsRecommended(null); }
 
-        System.out.println(person.isIsRecommended());
         return person;
     }
 

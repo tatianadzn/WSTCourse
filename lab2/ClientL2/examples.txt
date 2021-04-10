@@ -1,0 +1,17 @@
+show null null null null null null
+show null null null null null true
+create Арсений Попов 24 23 false
+create Борис Ващук 45 12 true
+show null null null null null null
+delete 28
+show null null null null null true
+show 5 null null null null true
+show null null null null null false
+show null null null null null true
+show null null null null null true
+show null null null null null true
+show null null null null null true
+delete 30
+show null null null null null true
+show 10 null null null null null
+show null null null null null true
