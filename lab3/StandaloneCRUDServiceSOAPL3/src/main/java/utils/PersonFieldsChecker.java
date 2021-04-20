@@ -32,6 +32,17 @@ public class PersonFieldsChecker {
         checkStateIdCouldBeNull(person.getStateId());
     }
 
+    public static void isAllFieldsNull(Person person) throws IllegalUpdatePersonSetException {
+        if (person.getFirstName() == null &&
+            person.getLastName() == null &&
+            person.getAge() == null &&
+            person.getStateId() == null &&
+            person.getIsRecommended() == null) {
+            ExceptionThrower.throwIllegalCreatePersonSetException("all person info cannot be null",
+                    "updated fields are not specified");
+        }
+    }
+
     public static void checkIdNotNull(Integer id) throws IllegalIdException {
         if (id == null || isNotCorrectId(id)) {
             ExceptionThrower.throwIllegalIdException("id cannot be null or not positive",

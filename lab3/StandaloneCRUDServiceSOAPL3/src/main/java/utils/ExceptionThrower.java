@@ -32,4 +32,27 @@ public class ExceptionThrower {
         fault.setMessage(msg1);
         throw new IllegalRecommendedStatusException(msg2, fault);
     }
+
+
+    public static void throwIllegalCreatePersonSetException(String msg1, String msg2) throws IllegalUpdatePersonSetException {
+        PersonServiceFault fault = PersonServiceFault.defaultInstance();
+        fault.setMessage(msg1);
+        throw new IllegalUpdatePersonSetException(msg2, fault);
+    }
+
+
+    public static void throwBadQueryResponseException(String msg1, String msg2) throws BadQueryResponseException {
+        PersonServiceFault fault = PersonServiceFault.defaultInstance();
+        fault.setMessage(msg1);
+        throw new BadQueryResponseException(msg2, fault);
+    }
+
+    public static void throwSQLException(String msg1, String msg2) throws SQLException {
+        PersonServiceFault fault = PersonServiceFault.defaultInstance();
+        fault.setMessage(msg1);
+        throw new SQLException(msg2, fault);
+    }
+
+
+
 }
