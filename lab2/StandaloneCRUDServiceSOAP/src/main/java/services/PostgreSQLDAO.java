@@ -135,7 +135,7 @@ public class PostgreSQLDAO {
     }
 
     private String buildCreateQuery(Person person){
-        return "INSERT INTO persons(first_name, last_name, age, is_recommended, state_id) " +
+        return "INSERT INTO persons(first_name, last_name, age, state_id, is_recommended) " +
                 "values (\'" + person.getFirstName() + "\', \'" + person.getLastName() + "\', " +
                 person.getAge() + ", " + person.getStateId() + ", " + person.getIsRecommended() + ") returning id;";
     }
