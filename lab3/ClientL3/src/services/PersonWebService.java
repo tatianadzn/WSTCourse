@@ -31,11 +31,11 @@ public interface PersonWebService {
      * @param arg0
      * @return
      *     returns java.util.List<services.PersonWithID>
-     * @throws IllegalIdException
      * @throws IllegalStateIdException
+     * @throws IllegalNameException
+     * @throws IllegalIdException
      * @throws IllegalAgeException
      * @throws SQLException
-     * @throws IllegalNameException
      */
     @WebMethod
     @WebResult(name = "person", targetNamespace = "")
@@ -59,13 +59,13 @@ public interface PersonWebService {
      * @param arg0
      * @return
      *     returns int
+     * @throws IllegalStateIdException
      * @throws BadQueryResponseException
      * @throws IllegalIdException
-     * @throws IllegalStateIdException
-     * @throws IllegalAgeException
-     * @throws SQLException
      * @throws IllegalNameException
+     * @throws IllegalAgeException
      * @throws IllegalRecommendedStatusException
+     * @throws SQLException
      */
     @WebMethod
     @WebResult(name = "resultCode", targetNamespace = "")
@@ -91,13 +91,13 @@ public interface PersonWebService {
      * @param arg0
      * @return
      *     returns int
-     * @throws BadQueryResponseException
-     * @throws IllegalIdException
      * @throws IllegalStateIdException
+     * @throws BadQueryResponseException
      * @throws IllegalUpdatePersonSetException
+     * @throws IllegalNameException
+     * @throws IllegalIdException
      * @throws IllegalAgeException
      * @throws SQLException
-     * @throws IllegalNameException
      */
     @WebMethod
     @WebResult(name = "resultCode", targetNamespace = "")
@@ -140,6 +140,46 @@ public interface PersonWebService {
         @WebParam(name = "arg0", targetNamespace = "")
         int arg0)
         throws BadQueryResponseException, IllegalIdException, SQLException
+    ;
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @throws BadBinaryAttachmentException
+     */
+    @WebMethod
+    @RequestWrapper(localName = "upload", targetNamespace = "http://services/", className = "services.Upload")
+    @ResponseWrapper(localName = "uploadResponse", targetNamespace = "http://services/", className = "services.UploadResponse")
+    @Action(input = "http://services/PersonWebService/uploadRequest", output = "http://services/PersonWebService/uploadResponse", fault = {
+        @FaultAction(className = BadBinaryAttachmentException.class, value = "http://services/PersonWebService/upload/Fault/BadBinaryAttachmentException")
+    })
+    public void upload(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        byte[] arg1)
+        throws BadBinaryAttachmentException
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns byte[]
+     * @throws BadBinaryAttachmentException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "download", targetNamespace = "http://services/", className = "services.Download")
+    @ResponseWrapper(localName = "downloadResponse", targetNamespace = "http://services/", className = "services.DownloadResponse")
+    @Action(input = "http://services/PersonWebService/downloadRequest", output = "http://services/PersonWebService/downloadResponse", fault = {
+        @FaultAction(className = BadBinaryAttachmentException.class, value = "http://services/PersonWebService/download/Fault/BadBinaryAttachmentException")
+    })
+    public byte[] download(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0)
+        throws BadBinaryAttachmentException
     ;
 
 }

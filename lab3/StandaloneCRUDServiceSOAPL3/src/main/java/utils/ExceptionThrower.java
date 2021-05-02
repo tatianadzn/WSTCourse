@@ -1,8 +1,16 @@
 package utils;
 
 import errors.*;
+import errors.binaryAttachmentExceptions.BadBinaryAttachmentException;
+import errors.binaryAttachmentExceptions.PersonServiceBinaryAttachmentFault;
 
 public class ExceptionThrower {
+    public static void throwBadBinaryAttachmentException (String msg1, String msg2) throws BadBinaryAttachmentException {
+        PersonServiceBinaryAttachmentFault fault = PersonServiceBinaryAttachmentFault.defaultInstance();
+        fault.setMessage(msg1);
+        throw new BadBinaryAttachmentException(msg2, fault);
+    }
+
     public static void throwIllegalIdException(String msg1, String msg2) throws IllegalIdException {
         PersonServiceFault fault = PersonServiceFault.defaultInstance();
         fault.setMessage(msg1);

@@ -27,20 +27,27 @@ public class ObjectFactory {
     private final static QName _IllegalNameException_QNAME = new QName("http://services/", "IllegalNameException");
     private final static QName _UpdatePerson_QNAME = new QName("http://services/", "updatePerson");
     private final static QName _DeletePersonResponse_QNAME = new QName("http://services/", "deletePersonResponse");
+    private final static QName _Download_QNAME = new QName("http://services/", "download");
     private final static QName _BadQueryResponseException_QNAME = new QName("http://services/", "BadQueryResponseException");
     private final static QName _UpdatePersonResponse_QNAME = new QName("http://services/", "updatePersonResponse");
+    private final static QName _DownloadResponse_QNAME = new QName("http://services/", "downloadResponse");
     private final static QName _Person_QNAME = new QName("http://services/", "person");
     private final static QName _IllegalRecommendedStatusException_QNAME = new QName("http://services/", "IllegalRecommendedStatusException");
     private final static QName _IllegalStateIdException_QNAME = new QName("http://services/", "IllegalStateIdException");
     private final static QName _GetPersons_QNAME = new QName("http://services/", "getPersons");
     private final static QName _CreatePerson_QNAME = new QName("http://services/", "createPerson");
+    private final static QName _UploadResponse_QNAME = new QName("http://services/", "uploadResponse");
     private final static QName _IllegalAgeException_QNAME = new QName("http://services/", "IllegalAgeException");
+    private final static QName _BadBinaryAttachmentException_QNAME = new QName("http://services/", "BadBinaryAttachmentException");
     private final static QName _DeletePerson_QNAME = new QName("http://services/", "deletePerson");
     private final static QName _CreatePersonResponse_QNAME = new QName("http://services/", "createPersonResponse");
     private final static QName _IllegalUpdatePersonSetException_QNAME = new QName("http://services/", "IllegalUpdatePersonSetException");
     private final static QName _GetPersonsResponse_QNAME = new QName("http://services/", "getPersonsResponse");
     private final static QName _IllegalIdException_QNAME = new QName("http://services/", "IllegalIdException");
     private final static QName _SQLException_QNAME = new QName("http://services/", "SQLException");
+    private final static QName _Upload_QNAME = new QName("http://services/", "upload");
+    private final static QName _UploadArg1_QNAME = new QName("", "arg1");
+    private final static QName _DownloadResponseReturn_QNAME = new QName("", "return");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: services
@@ -74,6 +81,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Upload }
+     * 
+     */
+    public Upload createUpload() {
+        return new Upload();
+    }
+
+    /**
      * Create an instance of {@link GetPersonsResponse }
      * 
      */
@@ -87,6 +102,22 @@ public class ObjectFactory {
      */
     public CreatePerson createCreatePerson() {
         return new CreatePerson();
+    }
+
+    /**
+     * Create an instance of {@link UploadResponse }
+     * 
+     */
+    public UploadResponse createUploadResponse() {
+        return new UploadResponse();
+    }
+
+    /**
+     * Create an instance of {@link PersonServiceBinaryAttachmentFault }
+     * 
+     */
+    public PersonServiceBinaryAttachmentFault createPersonServiceBinaryAttachmentFault() {
+        return new PersonServiceBinaryAttachmentFault();
     }
 
     /**
@@ -106,11 +137,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Download }
+     * 
+     */
+    public Download createDownload() {
+        return new Download();
+    }
+
+    /**
      * Create an instance of {@link GetPersons }
      * 
      */
     public GetPersons createGetPersons() {
         return new GetPersons();
+    }
+
+    /**
+     * Create an instance of {@link DownloadResponse }
+     * 
+     */
+    public DownloadResponse createDownloadResponse() {
+        return new DownloadResponse();
     }
 
     /**
@@ -165,6 +212,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Download }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services/", name = "download")
+    public JAXBElement<Download> createDownload(Download value) {
+        return new JAXBElement<Download>(_Download_QNAME, Download.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonServiceFault }{@code >}}
      * 
      */
@@ -180,6 +236,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://services/", name = "updatePersonResponse")
     public JAXBElement<UpdatePersonResponse> createUpdatePersonResponse(UpdatePersonResponse value) {
         return new JAXBElement<UpdatePersonResponse>(_UpdatePersonResponse_QNAME, UpdatePersonResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DownloadResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services/", name = "downloadResponse")
+    public JAXBElement<DownloadResponse> createDownloadResponse(DownloadResponse value) {
+        return new JAXBElement<DownloadResponse>(_DownloadResponse_QNAME, DownloadResponse.class, null, value);
     }
 
     /**
@@ -228,12 +293,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UploadResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services/", name = "uploadResponse")
+    public JAXBElement<UploadResponse> createUploadResponse(UploadResponse value) {
+        return new JAXBElement<UploadResponse>(_UploadResponse_QNAME, UploadResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonServiceFault }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://services/", name = "IllegalAgeException")
     public JAXBElement<PersonServiceFault> createIllegalAgeException(PersonServiceFault value) {
         return new JAXBElement<PersonServiceFault>(_IllegalAgeException_QNAME, PersonServiceFault.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PersonServiceBinaryAttachmentFault }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services/", name = "BadBinaryAttachmentException")
+    public JAXBElement<PersonServiceBinaryAttachmentFault> createBadBinaryAttachmentException(PersonServiceBinaryAttachmentFault value) {
+        return new JAXBElement<PersonServiceBinaryAttachmentFault>(_BadBinaryAttachmentException_QNAME, PersonServiceBinaryAttachmentFault.class, null, value);
     }
 
     /**
@@ -288,6 +371,33 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://services/", name = "SQLException")
     public JAXBElement<PersonServiceFault> createSQLException(PersonServiceFault value) {
         return new JAXBElement<PersonServiceFault>(_SQLException_QNAME, PersonServiceFault.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Upload }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services/", name = "upload")
+    public JAXBElement<Upload> createUpload(Upload value) {
+        return new JAXBElement<Upload>(_Upload_QNAME, Upload.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "arg1", scope = Upload.class)
+    public JAXBElement<byte[]> createUploadArg1(byte[] value) {
+        return new JAXBElement<byte[]>(_UploadArg1_QNAME, byte[].class, Upload.class, ((byte[]) value));
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "return", scope = DownloadResponse.class)
+    public JAXBElement<byte[]> createDownloadResponseReturn(byte[] value) {
+        return new JAXBElement<byte[]>(_DownloadResponseReturn_QNAME, byte[].class, DownloadResponse.class, ((byte[]) value));
     }
 
 }

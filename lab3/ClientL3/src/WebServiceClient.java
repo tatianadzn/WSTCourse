@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -8,6 +8,8 @@ import java.util.Vector;
 import services.*;
 import utils.Parsers;
 
+import javax.xml.ws.soap.MTOMFeature;
+
 public class WebServiceClient {
     private static PersonService personService;
     private static final int NUM_OF_PERSON_WITH_ID_FIELD = 6;
@@ -16,7 +18,27 @@ public class WebServiceClient {
         printWelcomeMsg();
         URL url = new URL("http://localhost:8080/PersonService?wsdl");
         personService = new PersonService(url);
+        PersonWebService port = personService.getPersonWebServicePort(new MTOMFeature(true));
+        String fileName = "1.jpg";
+        String filePath = "/home/tatianadzn/WSTCourse/lab3/ClientL3/src/" + fileName;
+        File file = new File(filePath);
 
+        // uploads a file
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream inputStream = new BufferedInputStream(fis);
+            byte[] imageBytes = new byte[(int) file.length()];
+            inputStream.read(imageBytes);
+
+            port.upload(file.getName(), imageBytes);
+
+            inputStream.close();
+            System.out.println("File uploaded: " + filePath);
+        } catch (IOException | BadBinaryAttachmentException ex) {
+            System.err.println(ex);
+        }
+
+        // crud operations
         Scanner scanner = new Scanner(System.in);
         if (scanner.hasNext()) {
             String operation = scanner.next();
