@@ -9,7 +9,7 @@ import utils.Parsers;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.net.URL;
+import java.util.Base64;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
@@ -17,6 +17,8 @@ import java.util.Vector;
 public class App {
     private static final String URL = "http://localhost:8080/rest/persons";
     private static final int NUM_OF_PERSON_WITH_ID_FIELD = 6;
+    private static final String AUTH_STR = Base64.getEncoder().encodeToString(("Basic " + "User" + ":" + "Password").getBytes());
+
 
     public static void main(String[] args) throws IOException {
         printWelcomeMsg();
@@ -62,12 +64,16 @@ public class App {
     }
 
     private static int createPerson(Client client, String person) {
+
         WebResource webResource = client.resource(URL);
         if (person != null) {
             webResource = webResource.queryParam("person", person);
         }
         ClientResponse response =
-                webResource.accept(MediaType.TEXT_PLAIN).post(ClientResponse.class);
+                webResource
+                        .header("Authorization", AUTH_STR)
+                        .accept(MediaType.TEXT_PLAIN)
+                        .post(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             throw new IllegalStateException("Request failed");
         }
@@ -82,7 +88,10 @@ public class App {
             webResource = webResource.queryParam("personWithId", personWithId);
         }
         ClientResponse response =
-                webResource.accept(MediaType.TEXT_PLAIN).put(ClientResponse.class);
+                webResource
+                        .header("Authorization", AUTH_STR)
+                        .accept(MediaType.TEXT_PLAIN)
+                        .put(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             throw new IllegalStateException("Request failed");
         }
@@ -97,7 +106,10 @@ public class App {
             webResource = webResource.queryParam("id", id);
         }
         ClientResponse response =
-                webResource.accept(MediaType.TEXT_PLAIN).delete(ClientResponse.class);
+                webResource
+                        .header("Authorization", AUTH_STR)
+                        .accept(MediaType.TEXT_PLAIN)
+                        .delete(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             throw new IllegalStateException("Request failed");
         }
