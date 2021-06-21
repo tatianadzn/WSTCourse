@@ -1,20 +1,22 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 import services.*;
 import utils.Parsers;
 
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
+
 public class WebServiceClient {
     private static PersonService personService;
     private static final int NUM_OF_PERSON_WITH_ID_FIELD = 6;
+    private static URL url;
 
     public static void main(String[] args) throws MalformedURLException {
         printWelcomeMsg();
-        URL url = new URL("http://localhost:8080/PersonService?wsdl");
+        url = new URL("http://localhost:8080/PersonService?wsdl");
         personService = new PersonService(url);
 
         Scanner scanner = new Scanner(System.in);
@@ -68,7 +70,7 @@ public class WebServiceClient {
     private static void doCreateRequest(Vector<String> arg){
         try{
             Person person = Parsers.parsePerson(arg, NUM_OF_PERSON_WITH_ID_FIELD - 1);
-            int id_res = personService.getPersonWebServicePort().createPerson(person);
+            int id_res = getAuthPort().createPerson(person);
             System.out.println("Person successfully created; id = " + id_res);
 
         } catch (IOException e){
@@ -93,7 +95,7 @@ public class WebServiceClient {
     private static void doUpdateRequest(Vector<String> arg){
         try {
             PersonWithID personWithID = Parsers.parsePersonWithID(arg, NUM_OF_PERSON_WITH_ID_FIELD);
-            personService.getPersonWebServicePort().updatePerson(personWithID);
+            getAuthPort().updatePerson(personWithID);
             System.out.println("Person successfully updated");
 
         } catch (NumberFormatException e){
@@ -121,7 +123,7 @@ public class WebServiceClient {
         try {
             if (arg.size() != 1) throw new IOException("Expected 1 argument, got " + arg.size());
             int arg0 = Integer.parseInt(arg.firstElement().trim());
-            personService.getPersonWebServicePort().deletePerson(arg0);
+            getAuthPort().deletePerson(arg0);
             System.out.println("Person successfully deleted");
 
         } catch (IOException e){
@@ -149,5 +151,19 @@ public class WebServiceClient {
                 "create <arg1> .. <arg5>\n\t" +
                 "update <id> <arg1> .. <arg5>\n\t" +
                 "delete <id>\n");
+    }
+
+    private static PersonWebService getAuthPort(){
+        PersonWebService personWebService = personService.getPersonWebServicePort();
+
+        Map<String, Object> context = ((BindingProvider) personWebService).getRequestContext();
+        context.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, url.toString());
+        Map<String, List<String>> headers = new HashMap<>();
+        String credentials = "user:password";
+        String authEncoded = Base64.getEncoder().encodeToString(credentials.getBytes());
+        headers.put("Authorization", Collections.singletonList("Basic " + authEncoded));
+        context.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
+
+        return personWebService;
     }
 }
